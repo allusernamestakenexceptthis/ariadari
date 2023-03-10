@@ -11,5 +11,5 @@ module.exports = defineConfig({
     }
   },
 
-  publicPath: process.env.NODE_ENV === 'production' ? '/admin/' : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? '/newadmin/' : '/'
 })

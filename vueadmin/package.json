@@ -1,10 +1,10 @@
 {
-  "name": "vuefront",
+  "name": "vueadmin",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest ../src/main/resources/static/admin/",
+    "build": "vue-cli-service build --dest ../src/main/resources/static/newadmin/",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

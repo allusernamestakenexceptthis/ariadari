@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en-US">
+    <head th:fragment="common_header">
+
+        <meta charset="UTF-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1">
+        <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        
+        <title th:text="${title}">The awesome application</title>
+      
+        <!-- Common styles and scripts -->
+        <link rel="stylesheet" type="text/css" media="all" th:href="@{/main/css/styles.css}">
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+      
+        <!--/* Per-page placeholder for additional links */-->
+        <th:block th:if="${links}">
+            <th:block th:replace="${links}" />
+        </th:block> 
+      
+    </head>
+    <body>
+       
+        <footer th:fragment="footer">
+            <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+            <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+        </footer>
+        
+    </body>
+</html>

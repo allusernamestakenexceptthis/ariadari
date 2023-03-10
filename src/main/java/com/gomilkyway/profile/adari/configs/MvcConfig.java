@@ -21,7 +21,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
 	public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("forward:/index.html");
-        registry.addViewController("/admin").setViewName("forward:/admin/index.html");
+        registry.addViewController("/newadmin").setViewName("forward:/admin/index.html");
 		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/members").setViewName("members");
 		registry.addViewController("/login").setViewName("login");
@@ -36,9 +36,12 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/front/");
 
         // Serve static content from the "admin" subfolder for requests to "/admin"
-        registry.addResourceHandler("/admin/**")
-                .addResourceLocations("classpath:/static/admin/");
-    }
+        registry.addResourceHandler("/newadmin/**")
+                .addResourceLocations("classpath:/static/newadmin/");
 
+        // main static resources for spring boot
+        registry.addResourceHandler("/main/**")
+                .addResourceLocations("classpath:/static/main/");
+    }
 	
 }

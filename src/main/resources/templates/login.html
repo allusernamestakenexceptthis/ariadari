@@ -18,12 +18,14 @@
                     </div>
                     <form th:action="@{/login}" method="post" th:object = "${loginForm}">
                         <div class="form-floating mb-3">
-                            <input class="form-control" th:field="*{username}" th:placeholder="#{common.username}">
+                            <input class="form-control" th:field="*{username}" th:placeholder="#{common.username}" th:errorclass="is_valid">
                             <label for="username" th:text="#{common.username}">Username</label>
+                            <div class="invalid_feedback" th:errors="*{username}"></div>
                           </div>
                           <div class="form-floating mb-3">
-                            <input type="password" class="form-control" th:field="*{password}" th:placeholder="#{common.password}">
+                            <input type="password" class="form-control" th:field="*{password}" th:placeholder="#{common.password}" th:errorclass="is_valid">
                             <label for="password" th:text="#{common.password}">Password</label>
+                            <div class="invalid_feedback" th:errors="*{password}"></div>
                           </div>
                         <div>
                         <div class="text-center">

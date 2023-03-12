@@ -3,6 +3,7 @@ package com.gomilkyway.profile.adari.user;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.gomilkyway.profile.adari.annotations.MatchPassword;
 import com.gomilkyway.profile.adari.utils.PasswordUtil;
 
 import jakarta.persistence.CollectionTable;
@@ -16,31 +17,51 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
 
 /**
  * User entity
  * 
  */
 @Entity
-@Setter @Getter @EqualsAndHashCode
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 
+    @NotBlank
+    @Size(max=30)
 	@Column(unique = true, nullable = false)
 	private String username;
 
+    @Size(max=50)
 	private String name;
+
+    @NotBlank
+    @Size(max=255)
+    @Email
 	private String email;
 
 	@Column(columnDefinition = "VARCHAR(100) NOT NULL")
 	@Setter(value = AccessLevel.NONE)
 	private String password;
+
+    @Transient
+    @MatchPassword(matchField = "password", message = "Passwords do not match")
+    private String confirmPassword;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))

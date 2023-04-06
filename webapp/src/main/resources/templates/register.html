@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en-US">
+    <head th:replace="~{fragments/common :: common_header(title='Spring Security Example')}">
+        <title>#{headers.user-registration} </title>
+    </head>
+<body>
+    <h1 th:text="#{user.user_registration}">User Registration</h1>
+    <form th:object="${user}" th:action="@{/register}" method="post">
+        <div>
+            <label for="name" th:text="#{user.name}">Name:</label>
+            <input type="text" id="name" name="name" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div>
+            <label for="email" th:text="#{user.email}">Email:</label>
+            <input type="text" id="email" name="email" th:field="*{email}">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+        <div>
+            <label for="username" th:text="#{common.username}">Username:</label>
+            <input type="text" id="username" name="username" th:field="*{username}">
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+        <div>
+            <label for="password" th:text="#{common.password}">Password:</label>
+            <input type="password" id="password" name="password" th:field="*{password}">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+        <div>
+            <label for="confirmPassword" th:text="#{user.confirm_password}">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}">
+            <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+        </div>
+        
+        
+        <button type="submit" th:text="#{user.register}">Register</button>
+    </form>
+</body>
+</html>

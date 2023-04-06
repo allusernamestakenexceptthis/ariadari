@@ -15,7 +15,7 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private UserRepository userRepository;
 
-	@Override
+   	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 		Optional<User> emptyOrUser = userRepository.findByUsername(username);
 
@@ -33,5 +33,9 @@ public class UserService implements UserDetailsService{
 			);
 		}
 	}
+
+    public void registerNewUser(User user) {
+        userRepository.save(user);
+    }
 
 }

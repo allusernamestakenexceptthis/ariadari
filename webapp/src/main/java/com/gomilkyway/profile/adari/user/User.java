@@ -3,7 +3,6 @@ package com.gomilkyway.profile.adari.user;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.gomilkyway.profile.adari.annotations.MatchPassword;
 import com.gomilkyway.profile.adari.utils.PasswordUtil;
 
 import jakarta.persistence.CollectionTable;
@@ -17,10 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,28 +35,20 @@ import lombok.ToString;
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 
-    @NotBlank
-    @Size(max=30)
-	@Column(unique = true, nullable = false)
+	@Column(unique = true, nullable = false, columnDefinition = "VARCHAR(30) NOT NULL")
 	private String username;
 
-    @Size(max=50)
+    @Column(columnDefinition = "VARCHAR(50) NOT NULL")
 	private String name;
 
-    @NotBlank
-    @Size(max=255)
-    @Email
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
 	private String email;
 
 	@Column(columnDefinition = "VARCHAR(100) NOT NULL")
 	@Setter(value = AccessLevel.NONE)
 	private String password;
-
-    @Transient
-    @MatchPassword(matchField = "password", message = "Passwords do not match")
-    private String confirmPassword;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -76,67 +63,7 @@ public class User {
 		this.roles.add(UserRole.READER);
 	}
 
-	/**
-	 * Id getter and setter
-	 * 
-	 */
-	/*
-	public Integer getId(){
-		return this.id;
-	}
 
-	public void setId(Integer id){
-		this.id = id;
-	} */
-
-	/**
-	 * Username getter and setter
-	 * 
-	 */
-	/*
-	public String getUsername(){
-		return this.username;
-	}
-
-	public void setUsername(String username){
-		this.username = username;
-	} */
-
-	/**
-	 * Name getter and setter
-	 * 
-	 */
-	/*
-	public String getName(){
-		return this.name;
-	}
-
-	public void setName(String name){
-		this.name = name;
-	} */
-
-	/**
-	 * Email getter and setter
-	 * 
-	 */
-	/*
-	public String getEmail(){
-		return this.email;
-	}
-
-	public void setEmail(String email){
-		this.email = email;
-	} */
-
-	/**
-	 * Password getter and setter
-	 * 
-	 */
-	/*
-	public String getPassword(){
-		return this.password;
-	}
- 	*/
 	public void setPassword(String password){
 		this.password = PasswordUtil.encrypt(password);
 	}

@@ -1,6 +1,17 @@
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+
 dependencies {
     implementation project(':webapp')
+    implementation 'info.picocli:picocli:4.7.1'
 }
+
+
 
 // Copy scripts directory to build
 processResources {
@@ -10,16 +21,18 @@ processResources {
     }
 }
 
-jar {
+bootJar {
     archiveFileName = 'adari-cli.jar'
-    manifest {
-        attributes 'Main-Class': 'com.gomilkyway.cmdline.AdariCli'
-    }
 }
 
 task deleteCliBuild(type: Delete) {
-    delete "$buildDir/libs/adari-cli.jar"
+    delete "$buildDir/libs"
 }
+
+jar { enabled = false }
+
+tasks.build.dependsOn deleteCliBuild
+tasks.build.mustRunAfter deleteCliBuild
 /*
 
 task copyCli(type: Copy, dependsOn: deleteCliBuild) {

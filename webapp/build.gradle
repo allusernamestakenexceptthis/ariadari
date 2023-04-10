@@ -3,9 +3,9 @@ plugins {
 }
 
 war {
-    baseName = 'ariadari'
-    version = '1.0.0'
-    archiveName = "${baseName}.war"
+    archiveBaseName = 'ariadari'
+    archiveVersion = '1.0.0'
+    archiveFileName = archiveBaseName.get() + ".war"
     // Other configuration options for the WAR file...
 }
 

@@ -8,18 +8,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.core.io.ClassPathResource;
 
+import com.gomilkyway.cmdline.configs.CliCOnfig;
+import com.gomilkyway.cmdline.utils.CliVersionUtil;
 
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
+@Command(name = "adari-cli", description = "Ari Adari Cli Application")
 public class AdariCli {
 
+    @Option(names = {"-h", "--help"}, usageHelp = true, description = "Display this help message")
+    private boolean helpRequested;
 
     public static void main(String[] args) {
         System.out.println("Ari Adari CLI Version " + CliVersionUtil.getVersion());
-		//SpringApplication.run(AdariCli.class, args);
-        /*
-        SpringApplication springApplication = new SpringApplication(AdariCli.class);
-
-            springApplication.setWebApplicationType(WebApplicationType.NONE);
-            springApplication.run(args);*/
         SpringApplication app = new SpringApplication(CliCOnfig.class);
         app.setWebApplicationType(WebApplicationType.NONE);
         try {

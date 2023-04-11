@@ -1,4 +1,4 @@
-package com.gomilkyway.cmdline;
+package com.gomilkyway.cmdline.configs;
 
 
 import org.springframework.boot.CommandLineRunner;

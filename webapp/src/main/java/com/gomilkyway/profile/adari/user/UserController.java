@@ -1,5 +1,10 @@
 package com.gomilkyway.profile.adari.user;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,5 +75,6 @@ public class UserController {
 		//returns json or xml users
 		return userRepository.findAllBy(LimitedUserInfo.class);
 	}
+
 
 }

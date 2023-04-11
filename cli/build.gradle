@@ -8,7 +8,7 @@ repositories {
 
 dependencies {
     implementation project(':webapp')
-    implementation 'info.picocli:picocli:4.7.1'
+    implementation 'info.picocli:picocli-spring-boot-starter:4.7.2'
 }
 
 

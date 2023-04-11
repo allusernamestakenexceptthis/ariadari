@@ -1,8 +1,9 @@
-package com.gomilkyway.cmdline;
+package com.gomilkyway.cmdline.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
 
 import com.fasterxml.jackson.core.util.VersionUtil;
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeExceptionMapper;
 import org.springframework.boot.ExitCodeGenerator;
@@ -44,6 +45,9 @@ public class AdariCli implements CommandLineRunner, ExitCodeGenerator {
     private final Cli cliCommand;
     private int exitCode;
 
+    @Autowired
+    private UserService userService;
+
     public AdariCli(IFactory factory, Cli cliCommand) {
         this.factory = factory;
         this.cliCommand = cliCommand;
@@ -53,32 +57,22 @@ public class AdariCli implements CommandLineRunner, ExitCodeGenerator {
     public void run(String... args) {
         // let picocli parse command line args and run the business logic
         exitCode = new CommandLine(cliCommand, factory)  
-                      .addSubcommand("register", new Register()) 
+                      .addSubcommand("register", new Register(userService)) 
                       .execute(args);
     }
 
     public static void main(String[] args) {
         System.out.println("Ari Adari CLI Version " + CliVersionUtil.getVersion());
-        //System.exit(SpringApplication.exit(SpringApplication.run(AdariCli.class, args)));
         
         SpringApplication app = new SpringApplication(AdariCli.class);
         app.setWebApplicationType(WebApplicationType.NONE);
         try {
             app.setDefaultProperties(loadProperties("application.properties", "application-cli.properties"));
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.console().printf("Exiting application due to error: %s", e.getMessage());
         }
         System.exit(SpringApplication.exit(app.run(args))); 
-        
-        /*
-        SpringApplication app = new SpringApplication(CliConfig.class);
-        app.setWebApplicationType(WebApplicationType.NONE);
-        try {
-            app.setDefaultProperties(loadProperties("application.properties", "application-cli.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        app.run(args);*/
 	}
 
     private static Properties loadProperties(String... resourceNames) throws IOException {

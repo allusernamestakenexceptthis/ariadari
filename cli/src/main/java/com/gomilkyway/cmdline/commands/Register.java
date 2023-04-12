@@ -2,15 +2,20 @@ package com.gomilkyway.cmdline.commands;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import picocli.CommandLine.Help;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import com.gomilkyway.profile.adari.utils.PasswordUtil;
+
+import jakarta.validation.ValidationException;
+
 import com.gomilkyway.profile.adari.user.UserDTO;
 import com.gomilkyway.profile.adari.user.UserRole;
 import com.gomilkyway.profile.adari.user.UserService;
@@ -20,24 +25,84 @@ import com.gomilkyway.profile.adari.user.UserService;
     name = "register",
     description = "Register new user",
     mixinStandardHelpOptions = true,
-    version = "1.0.0"
+    sortOptions = false
 )
 public class Register implements Callable<Integer> {
 
-    @Option(names = {"-u", "--username"}, description = "Username", required = true)
+    @Option(names = {"-u", "--username"}, description = "Username", required = true, order = 1)
     private String username;
 
-    @Option(names = {"-p", "--password"}, description = "Password", required = true, interactive = true)
-    private char[] password;
+    @Option(names = {"-e", "--email"}, description = "Email", required = true, order = 3)
+    private String email;
 
-    @Option(names = {"-r", "--role"}, description = "User Role")
+    @Option(names = {"-r", "--role"}, description = "User Role", order = 4, defaultValue = "READER", showDefaultValue = Help.Visibility.ALWAYS)
     private UserRole role = null;
 
-    @Autowired
+    @Option(names = {"-p", "--password"}, description = "Password", required = true, order = 5, arity = "0..1")
+    private char[] password = null;
+
+    @Option(names = {"-n", "--name"}, description = "Name", required = false, order = 6)
+    private String name = "";
+
     private UserService userService;
+
+    public Register(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public Integer call() throws Exception {
+
+        UserDTO user = new UserDTO();
+        String pass = "";
+        if (password.length > 0){
+            pass = new String(password).trim();
+        }
+        String confirm = "";
+        List<String> errors = null;
+
+        System.out.println("Registering new user: ");
+
+        while (confirm == "") {
+            while (pass == "") {
+                try {
+                    password = System.console().readPassword("Enter password: ");
+                    if (password.length > 0) {
+                        pass = new String(password).trim();
+                        user.setPassword(pass);
+                        if ((errors = userService.validateUser(user, "password")) != null) {
+                            pass = "";
+                            throw new IllegalArgumentException(errors.toString().replaceAll("[\\[\\]]", ""));
+                        }
+                    } else {
+                        throw new IllegalArgumentException("Password cannot be empty");
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    password = null;
+                }
+            }
+
+            int tries = 1;
+            while (confirm == "") {
+                try {
+                    String prompt = "Confirm password" + (tries>1?" (try "+ tries +")":"") + ": ";
+                    confirm = new String(System.console().readPassword(prompt)).trim();
+                    if (!pass.equals(confirm)) {
+                        throw new IllegalArgumentException();
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Passwords do not match");
+                    confirm = "";
+                    tries++;
+                    if (tries > 3) {
+                        System.out.println("Too many failures, try entering your password again or Ctrl+C to abort");
+                        pass = "";
+                        break;
+                    }
+                }
+            }
+        }
 
         while (role == null) {
             try {
@@ -47,42 +112,53 @@ public class Register implements Callable<Integer> {
                 System.out.println("Invalid role");
             }
         }
-        
-
-        if (role == null) {
+       
+        Set<UserRole> roles;
+        if (role != null) {
+            roles = Set.of(role);
+        } else {
             role = UserRole.READER;
+            roles = Set.of(role);
         }
 
+        if (role != UserRole.READER) {
+            roles.add(UserRole.READER);
+        }
 
-        byte[] bytes = new byte[password.length];
-        for (int i = 0; i < bytes.length; i++) { bytes[i] = (byte) password[i]; }
-        String pass = Arrays.toString(bytes);
-
-        UserDTO user = new UserDTO();
+        user = new UserDTO();
         user.setUsername(username);
         user.setPassword(pass);
-        user.setRole(role);
-        
+        user.setConfirmPassword(confirm);
+        user.setEmail(email);
+        user.setName(name);
 
-        List<String> errors = userService.validateUser(user);
+        user.setRoles(roles);
 
-        ValidPasswordValidator validator = new ValidPasswordValidator();
-        if (!validator.isValid(pass, null)) {
-            System.out.println("Invalid password");
-            return -1;
+        try {
+            errors = userService.validateUser(user);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return 1;
         }
 
-        String hash = PasswordUtil.encrypt(pass);
+        if (errors != null){ 
+            for (String error : errors) {
+                System.out.println(error);
+            }
+            return 1;
+        }
+
         
-
-        System.out.printf("Hi %s, your password is hashed to %s.%n", username, hash);
-
-        // null out the arrays when done
-        Arrays.fill(bytes, (byte) 0);
         Arrays.fill(password, ' ');
+        confirm = "";
+
+        if (userService.registerNewUser(user) != null) {
+            System.out.println("User registered successfully");
+        } else {
+            System.out.println("User registration failed");
+        }
 
         return 0;
     }
-
-    
 }
+

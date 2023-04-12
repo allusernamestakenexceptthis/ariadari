@@ -32,7 +32,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private UserMapper userMapper;
+    private UserMapperImpl userMapper;
 
     @PostMapping(path = "/register")
     public ResponseEntity<UserDTO> registerNewUser (@Valid @RequestBody UserDTO user, BindingResult bindingResult) {

@@ -16,12 +16,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 
  */
 @Documented
-@Target({ ElementType.FIELD })
+@Target({ ElementType.TYPE })
 @Constraint(validatedBy = { MatchPasswordValidator.class })
 @Retention(RUNTIME)
 public @interface MatchPassword {
     String message() default "Passwords do not match";
-    String matchField();
+    String passwordField();
+    String confirmField();
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

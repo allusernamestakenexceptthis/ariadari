@@ -27,6 +27,9 @@ public class UserService implements UserDetailsService{
     @Autowired
     private ValidatorFactory validatorFactory;
 
+    @Autowired
+    private UserMapperImpl userMapper;
+
    	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 		Optional<User> emptyOrUser = userRepository.findByUsername(username);
@@ -52,18 +55,39 @@ public class UserService implements UserDetailsService{
         return violations;
     }
 
+    public Set<ConstraintViolation<UserDTO>> getUserPropertyValidation(UserDTO user, String property) {
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<UserDTO>> violations = validator.validateProperty(user, property);
+        return violations;
+    }
+
     public List<String> validateUser(UserDTO user) {
-        Set<ConstraintViolation<UserDTO>> violations = getUserValidations(user);
+        return validateUser(user, null);
+    }
+
+    public List<String> validateUser(UserDTO user, String property) {
+
+        Set<ConstraintViolation<UserDTO>> violations = null;
+        if (property != null) {
+            violations = getUserPropertyValidation(user, property);
+        } else { 
+            violations = getUserValidations(user);
+        }
+
         List<String> errors = new ArrayList<>();
         if (!violations.isEmpty()) {
-            System.out.println("Validation errors:");
             violations.forEach(violation -> errors.add(violation.getMessage()));
-            ;
         }
         if (errors.isEmpty()) {
             return null;
         }
         return errors;
+    }
+
+    public UserDTO registerNewUser(UserDTO user) {
+        User userEntity = userMapper.toEntity(user);
+        registerNewUser(userEntity);
+        return userMapper.toDto(userEntity);
     }
 
     public void registerNewUser(User user) {

@@ -60,6 +60,7 @@ public class UserController {
         return "register";
     }
 
+    /*TODO: remove this method
 	@PostMapping(path = "/adduser")
 	public @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String email, @RequestParam String password) {
 		User n = new User();
@@ -68,7 +69,7 @@ public class UserController {
 		n.setPassword(password);
 		userRepository.save(n);
 		return "Saved";
-	}
+	}*/
 
 	@GetMapping(path = "/allusers")
 	public @ResponseBody Iterable<LimitedUserInfo> getAllUsers() {

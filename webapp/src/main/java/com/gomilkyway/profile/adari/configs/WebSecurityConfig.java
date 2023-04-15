@@ -58,14 +58,4 @@ public class WebSecurityConfig {
 		return new InMemoryUserDetailsManager(user);
 	}*/
 
-	/**
-	 * Configure the password encoder
-	 * 
-	 * @return BCryptPasswordEncoder
-	 */
-	@Bean
-	public BCryptPasswordEncoder passwordEncoderz() {
-		return new BCryptPasswordEncoder();
-	}
-
 }

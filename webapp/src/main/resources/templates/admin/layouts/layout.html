@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en-US">
+
+<head th:replace="~{admin/fragments/common :: common_header(titletag=~{ :: title })}">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Admin</title>
+</head>
+
+<body>
+    <th:block th:replace="~{admin/fragments/common :: header}">...</th:block>
+    <div class="content-wrapper flex-block">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="~{admin/fragments/common :: sidebar}"></th:block>
+                <div class="col-12" layout:fragment="content">
+                    <h1>Admin</h1>
+                    <p class="lead">Welcome.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:replace="~{admin/fragments/common :: footer}">...</th:block>
+</body>
+</html>

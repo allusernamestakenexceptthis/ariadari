@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en-US">
+
+<head th:fragment="common_header">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <th:block th:if="${titletag}">
+        <th:block th:replace="${titletag}" />
+    </th:block>
+    <th:block th:unless="${titletag}">
+        <title th:text="${title}">Ari Adari</title>
+    </th:block>
+
+    <!-- Common styles and scripts -->
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/main/css/styles.css}">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/main/css/admin_styles.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+
+    <!--/* Per-page placeholder for additional links */-->
+    <th:block th:if="${links}">
+        <th:block th:replace="${links}" />
+    </th:block>
+
+</head>
+
+<body>
+    
+    <header class="w-100 text-bg-secondary text-seconday p-2" th:fragment="header">
+        <h1>Admin
+            <th:block th:if="${page_title}">
+                :
+                <span th:remove="tag" th:text="${page_title}"></span>
+            </th:block>
+        </h1>
+    </header>
+    <div class="content-wrapper flex-block">
+        <sidebar class="w-20 text-bg-secondary text-seconday p-2" th:fragment="sidebar">
+            <ul>
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/admin/users">Users</a></li>
+                <li><a href="/admin/roles">Roles</a></li>
+                <li><a href="/admin/permissions">Permissions</a></li>
+            </ul>
+        </sidebar>
+        <main class="w-80 text-bg-secondary text-seconday p-2" th:fragment="main">
+            <th:block th:replace="${content}"></th:block>
+        </main>
+    </div>
+    <footer th:fragment="footer">
+        
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    </footer>
+
+</body>
+
+</html>

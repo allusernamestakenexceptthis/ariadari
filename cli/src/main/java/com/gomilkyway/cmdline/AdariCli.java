@@ -6,13 +6,13 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.ExitCodeExceptionMapper;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.core.io.ClassPathResource;
 
 import com.gomilkyway.cmdline.commands.Register;
+import com.gomilkyway.cmdline.commands.Update;
 import com.gomilkyway.cmdline.commands.Cli;
 import com.gomilkyway.cmdline.utils.CliVersionUtil;
 
@@ -24,12 +24,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
 import picocli.CommandLine.IFactory;
-import picocli.CommandLine.Option;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.gomilkyway.profile.adari.user.UserService;
 
@@ -57,7 +53,8 @@ public class AdariCli implements CommandLineRunner, ExitCodeGenerator {
     public void run(String... args) {
         // let picocli parse command line args and run the business logic
         exitCode = new CommandLine(cliCommand, factory)  
-                      .addSubcommand("register", new Register(userService)) 
+                      .addSubcommand("register", new Register(userService))
+                      .addSubcommand("update", new Update(userService))
                       .execute(args);
     }
 

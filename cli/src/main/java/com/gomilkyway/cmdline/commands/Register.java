@@ -5,14 +5,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import picocli.CommandLine.Help;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
-import com.gomilkyway.profile.adari.utils.PasswordUtil;
 
 import jakarta.validation.ValidationException;
 
@@ -52,17 +49,24 @@ public class Register implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
+        
+        
+        if (userService.doesUserExist(username)){
+            throw new ValidationException("User already exists");
+        }
+
+        System.out.println("Registering new user: ");
 
         UserDTO user = new UserDTO();
+        List<String> errors = null;
+
+        
         String pass = "";
         if (password.length > 0){
             pass = new String(password).trim();
         }
+
         String confirm = "";
-        List<String> errors = null;
-
-        System.out.println("Registering new user: ");
-
         while (confirm == "") {
             while (pass == "") {
                 try {

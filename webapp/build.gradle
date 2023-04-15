@@ -25,7 +25,9 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 	implementation 'org.springframework.security:spring-security-test'
 
+    //development
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-starter-actuator'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 }

@@ -1,6 +1,5 @@
 package com.gomilkyway.cmdline.commands;
 
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 import org.springframework.stereotype.Component;

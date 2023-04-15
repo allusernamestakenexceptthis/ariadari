@@ -41,4 +41,31 @@ public class UserMapperImpl implements UserMapper {
         
         return user;
     }
+
+    public User toExistingEntity(User user, UserDTO userDTO) {
+        if ( userDTO == null || user == null) {
+            return null;
+        }
+        
+        if ( userDTO.getId() != null ) {
+            user.setId( userDTO.getId() );
+        }
+        if ( userDTO.getName() != null ) {
+            user.setName( userDTO.getName() );
+        }
+        if ( userDTO.getUsername() != null ) {
+            user.setUsername( userDTO.getUsername() );
+        }
+        if ( userDTO.getPassword() != null ) {
+            user.setPassword( userDTO.getPassword() );
+        }
+        if ( userDTO.getEmail() != null ) {
+            user.setEmail( userDTO.getEmail() );
+        }
+        if ( userDTO.getRoles() != null ) {
+            user.setRoles( userDTO.getRoles() );
+        }
+        
+        return user;
+    }
 }

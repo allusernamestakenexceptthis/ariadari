@@ -11,6 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.gomilkyway.profile.adari.handlers.CustomAccessDeniedHandler;
+import com.gomilkyway.profile.adari.user.UserRole;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -26,13 +29,38 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http
-			.authorizeHttpRequests(requests -> requests.requestMatchers("/members/**").authenticated().anyRequest().permitAll())
+			.authorizeHttpRequests(requests -> requests
+                .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
+                .requestMatchers("/members/**").authenticated()
+                .requestMatchers(
+                    "/",
+                    "/favicon.ico",
+                    "/error",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/index.html",
+                    "/resources/**",
+                    "/get/**",
+                    "/main/**",
+                    "/front/**",
+                    "/webjars/**",
+                    "/register",
+                    "/login",
+                    "/home",
+                    "/status"
+                ).permitAll()
+                .anyRequest().denyAll()
+                
+            )
+            
 			.formLogin(form-> form
                         .loginPage("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
                        )
 			.csrf().disable()
+            .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler("redirect:/?accessDenied"))
 			;
 		/*
 		http

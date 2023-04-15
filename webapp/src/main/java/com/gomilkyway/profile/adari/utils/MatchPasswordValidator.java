@@ -22,7 +22,7 @@ public class MatchPasswordValidator implements ConstraintValidator<MatchPassword
     @Override
     public void initialize(final MatchPassword constraintAnnotation) {
         this.passwordFieldName = constraintAnnotation.passwordField();
-        this.confirmPasswordFieldName = constraintAnnotation.passwordField();
+        this.confirmPasswordFieldName = constraintAnnotation.confirmField();
     }
 
     @Override
@@ -39,7 +39,14 @@ public class MatchPasswordValidator implements ConstraintValidator<MatchPassword
             return false;
         }
         
-        return password.equals(confirmPassword);
+        boolean isValid = password.equals(confirmPassword);
+        if (!isValid) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode(confirmPasswordFieldName).addConstraintViolation();
+        }
+
+        return isValid;   
     }
     
 }

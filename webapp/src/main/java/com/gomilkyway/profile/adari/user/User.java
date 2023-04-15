@@ -25,7 +25,6 @@ import lombok.ToString;
 
 /**
  * User entity
- * 
  */
 @Entity
 @Setter

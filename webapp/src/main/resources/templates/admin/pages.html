@@ -36,11 +36,14 @@
                         <tbody>
                             <tr th:each="page, indx : ${pages}">
                                 <th scope="row" th:text="${page.id}">#</th>
-                                <td th:text="${page.title}">title</td>
-                                <td th:text="${page.content}">content</td>
+                                <td class="w-50" th:text="${page.title}">title</td>
+                                <td th:text="${page.excerpt}">content</td>
                                 <td th:text="${page.slug}">slug</td>
-                                <td th:text="${page.published}">published</td>
-                                <td></td>
+                                <td th:text="${(page.published) ? 'Published' : 'Unpublished'}">published</td>
+                                <td>
+                                    <a th:href="@{/admin/pages/edit/{id}(id=${page.id})}" class="btn btn-primary">Edit</a>
+                                    <a th:href="@{/admin/pages/delete/{id}(id=${page.id})}" class="btn btn-danger">Delete</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

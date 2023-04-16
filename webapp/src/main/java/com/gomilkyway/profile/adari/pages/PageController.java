@@ -1,7 +1,8 @@
 package com.gomilkyway.profile.adari.pages;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -13,7 +14,8 @@ public class PageController {
         this.pageService = pageService;
     }
 
-    @RequestMapping(path = "/get/allpages", produces = "application/json")
+    @CrossOrigin(origins = "http://localhost:8080, http://localhost:8082")
+    @GetMapping(path = "/get/allpages", produces = "application/json")
     public @ResponseBody Iterable<Page> getPublishedPages() {
         return pageService.getPublishedPages();
     }

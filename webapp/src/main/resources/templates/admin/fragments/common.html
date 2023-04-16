@@ -70,6 +70,12 @@
                             <span>Pages</span>
                         </a>
                     </div>
+                    <div class="navbar-item nav-link pl-3">
+                        <a th:href="@{/admin/pages/newOrEdit}" class="link-light" th:classappend="${currentPage == 'pages/newOrEdit' ? 'active' : ''}">
+                            <i class="bi bi-file-earmark-fill"></i>
+                            <span>New Page</span>
+                        </a>
+                    </div>
                     <!--
                     <div class="navbar-item">
                         <a href="/admin/users" class="sideNavbar__link">
@@ -103,10 +109,20 @@
         
         <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
-        <script th:src="@{/webjars/tinymce.js}"></script>
+        
         
     </footer>
-
+    <th:block th:fragment="tinymce">
+        <script th:src="@{/webjars/tinymce/tinymce.min.js}"></script>
+        <script>
+            tinymce.init({
+                selector: 'textarea.tinymceditor',
+                plugins: 'lists, link, image, media, code',
+                toolbar: 'undo redo | styles | bold italic | link image | alignleft aligncenter alignright alignjustify | backcolor outdent indent | numlist bullist | code | removeformat help',
+                menubar: false,
+            });
+        </script>
+    </th:block>
 </body>
 
 </html>

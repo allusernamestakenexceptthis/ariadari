@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.gomilkyway.profile.adari.handlers.CustomAccessDeniedHandler;
@@ -20,6 +21,11 @@ public class WebSecurityConfig {
 
     public WebSecurityConfig(UserService userService) {
         this.userService = userService;
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/resources/**", "/webjars/**");
     }
 
 	/**
@@ -67,6 +73,7 @@ public class WebSecurityConfig {
                 )
                 .csrf(withDefaults())
                 .exceptionHandling(handling -> handling.accessDeniedHandler(new CustomAccessDeniedHandler("redirect:/?accessDenied")))
+
 			;
 		
 		return http.build();

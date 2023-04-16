@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en-US"
+    layout:decorate="~{admin/layouts/layout}">
+
+<head>
+    <title>Pages : new</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Add new page</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form th:action="@{/admin/savepage}" method="post" th:object="${page}">
+                    <div th:if="${#fields.hasErrors('global')}" class="text-danger mb-3">
+                        <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" th:field="*{title}"
+                            th:placeholder="#{page.title}" th:errorclass="is-invalid">
+                        <label for="title" th:text="#{page.title}">Title:</label>
+                        <span class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <textarea class="form-control" th:field="*{content}"
+                            th:placeholder="#{page.content}" th:errorclass="is-invalid" rows="10" cols="120"></textarea>
+                        <span class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" th:field="*{slug}"
+                            th:placeholder="#{page.slug}" th:errorclass="is-invalid">
+                        <label for="slug" th:text="#{page.slug}">Slug:</label>
+                        <span class="invalid-feedback" th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" th:field="*{published}"
+                            th:placeholder="#{page.published}" th:errorclass="is-invalid">
+                        <label for="published" class="form-check-label" th:text="#{page.published}">Publish?</label>
+                        <span class="invalid-feedback" th:if="${#fields.hasErrors('published')}" th:errors="*{published}"></span>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" th:text="#{common.save}"
+                            class="btn btn-primary w-100">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

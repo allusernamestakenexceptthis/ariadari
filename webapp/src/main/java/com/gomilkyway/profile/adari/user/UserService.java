@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -38,16 +37,20 @@ public class UserService implements UserDetailsService{
      * @throws UsernameNotFoundException
      */
    	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+	public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         try {
 		    User user = findByUsername(username);
-			return new org.springframework.security.core.userdetails.User(
+			return new CustomUserDetailsUser(
 					user.getUsername(),
 					user.getPassword(),
 					user.getRoles()
-					.stream()
-					.map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(role.name()))
-					.collect(Collectors.toSet())
+					    .stream()
+					    .map(
+                            role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(role.name())
+                        )
+					    .collect(Collectors.toSet()),
+                    user.getName(),
+                    user.getEmail()
 			);
 		} catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException("User not found");

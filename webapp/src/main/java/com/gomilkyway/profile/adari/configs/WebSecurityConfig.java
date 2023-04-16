@@ -10,10 +10,17 @@ import com.gomilkyway.profile.adari.handlers.CustomAccessDeniedHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import com.gomilkyway.profile.adari.user.UserRole;
+import com.gomilkyway.profile.adari.user.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+    private final UserService userService;
+
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
 	/**
 	 * Configure the security filter chain
@@ -26,6 +33,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
+                .userDetailsService(userService)
                 .authorizeHttpRequests(requests -> requests
                                 .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
                                 .requestMatchers("/members/**").authenticated()

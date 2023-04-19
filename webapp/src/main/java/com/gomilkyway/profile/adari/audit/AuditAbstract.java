@@ -16,22 +16,41 @@ import jakarta.persistence.Temporal;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * AuditAbstract entity parent class for auditing
+ * to provides createdBy, modifiedBy, createdDate, modifiedDate
+ * to track who and when the entity is created and modified
+ */
 @Getter
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditAbstract<T> {
 
+    /**
+     * Username of the account that created the record
+     * T is currently String
+     */
     @CreatedBy
     protected T createdBy;
 
+    /**
+     * Username of the account that last modified the record
+     * T is currently String
+     */
     @LastModifiedBy
     protected T modifiedBy;
 
+    /**
+     * Date and time of the record creation
+     */
     @CreatedDate
     @Temporal(TIMESTAMP)
     protected Date createdDate;
 
+    /**
+     * Date and time of the last modification
+     */
     @LastModifiedDate
     @Temporal(TIMESTAMP)
     protected Date modifiedDate;

@@ -18,10 +18,12 @@ package com.gomilkyway.profile.adari.admin;
 
 import org.springframework.stereotype.Controller;
 
+/**
+ * Empty admin controller for future use
+ */
+
 @Controller
 public class AdminController {
-    
-
-    
+        
 
 }

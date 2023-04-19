@@ -19,6 +19,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
+/**
+ * Configuration class for Thymeleaf Layout Dialect
+ */
 @Configuration
 public class TemplateConfig {
     

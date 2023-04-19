@@ -24,6 +24,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
+/**
+ * MVC configuration class
+ * the purpose of this class is to configure the MVC
+ * and add view controllers to the registry
+ * and intercepters and resource handlers
+ */
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -52,6 +58,11 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/status").setViewName("status");
 	}
 
+    /**
+     * Add resource handlers to the registry
+     * For vue front end and future admin panel
+     * and separate them from the main static resources
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Serve static content from the "front" subfolder by default
@@ -67,6 +78,12 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/main/");
     }
 	
+    /**
+     * Add intercepters to the registry
+     * The admin intercepter is for the admin panel
+     * To add more information to the template engine
+     * such as version and current page
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AdminIntercepterHandler()).addPathPatterns("/admin/**");

@@ -4,15 +4,12 @@
             <div class="w-100 h-100 m-0">
                 <headerPart/>
 
-                <v-container class="background-cover">
+                <v-container>
                     <v-row>
                         <home/>
                     </v-row>
                 </v-container>
             </div>
-            <video preload="auto" autoplay="false" ref="video_background" loop="loop" muted="muted" class="video-background">
-                <source src="@/assets/videos/EarthMoonZoomS.mp4" type="video/mp4">
-            </video>
         </v-layout>
     </v-app>
 
@@ -47,18 +44,5 @@ export default {
   color: #2c3e50;
   margin-top: 0;
   scroll-behavior: smooth;
-}
-.background-cover {
-    background: url(@/assets/images/background.jpg) repeat;
-    background-size: cover;
-    top: 0;
-}
-.video-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -1;
 }
 </style>

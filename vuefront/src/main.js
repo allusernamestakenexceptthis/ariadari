@@ -8,6 +8,9 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import { md3 } from 'vuetify/blueprints'
+import VueAnimateOnScroll from 'vue3-animate-onscroll'
+
+import '@mdi/font/css/materialdesignicons.min.css'
 
 const vuetify = createVuetify({
   defaultSet: mdi,
@@ -16,6 +19,7 @@ const vuetify = createVuetify({
   sets: {
     mdi
   },
+  VueAnimateOnScroll,
   components,
   directives
 })

@@ -27,8 +27,8 @@ import jakarta.validation.Payload;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
- * Match password annotation
- * 
+ * Match password annotation interface to ensure
+ * password and confirm password fields match
  */
 @Documented
 @Target({ ElementType.TYPE })

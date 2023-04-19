@@ -15,8 +15,6 @@
  */
 package com.gomilkyway.profile.adari.files;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
@@ -28,12 +26,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gomilkyway.profile.adari.utils.SanitizingUtil;
 
 @Service
 public class FiledbService {
@@ -51,7 +48,12 @@ public class FiledbService {
     }
 
     public Filedb getFile(String name) {
-        return filedbRepository.findByName(name).get();
+        Optional<Filedb> file = filedbRepository.findByName(name);
+        if (file.isPresent()) {
+            return file.get();
+        } else {
+            return null;
+        }
     }
 
     public Boolean isFileValidImage(MultipartFile file) {

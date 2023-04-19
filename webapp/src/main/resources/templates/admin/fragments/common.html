@@ -71,7 +71,7 @@
                         </a>
                     </div>
                     <div class="navbar-item nav-link pl-3">
-                        <a th:href="@{/admin/pages/newOrEdit}" class="link-light" th:classappend="${currentPage == 'pages/newOrEdit' ? 'active' : ''}">
+                        <a th:href="@{/admin/pages/new}" class="link-light" th:classappend="${currentPage == 'pages/new' || currentPage == 'pages/edit' ? 'active' : ''}">
                             <i class="bi bi-file-earmark-fill"></i>
                             <span>New Page</span>
                         </a>
@@ -162,21 +162,19 @@
                 images_upload_handler: image_upload_handler,
                 images_upload_base_path: '/uimages/',
                 images_upload_credentials: true,
+                images_reuse_filename: true,
                 menubar: false,
             });
             function processImagesAndSubmit(contextId) {
                 $(contextId).find('button[type="submit"]').prop('disabled', true);
                 $(contextId).find('.overlayloader').addClass('show');
-                tinymce.activeEditor.uploadImages(function(success, response) {
-                    if (!success) {
-                        console.log(response);
-                        alert(response);
-                        $(contextId).find('button[type="submit"]').prop('disabled', false);
-                        $(contextId).find('.overlayloader').removeClass('show');
-                        return;
-                    } else {
-                        $(contextId).submit();
-                    }
+                tinymce.activeEditor.uploadImages().then((result) => {
+                    $(contextId).submit();
+                }).catch((e) => {
+                    console.log(e);
+                    alert(e);
+                    $(contextId).find('button[type="submit"]').prop('disabled', false);
+                    $(contextId).find('.overlayloader').removeClass('show');
                 });
             }
         </script>

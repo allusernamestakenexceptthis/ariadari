@@ -3,7 +3,8 @@ package com.gomilkyway.profile.adari.files;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.http.HttpHeaders;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -28,7 +29,12 @@ public class FileController {
 
     @GetMapping("/uimages/{filename}")
     public ResponseEntity<StreamingResponseBody> serveFile(@PathVariable String filename) {
-        Filedb filedb = filedbService.getFile(filename);
+        Filedb filedb;
+        try {
+            filedb = filedbService.getFile(URLEncoder.encode(filename, StandardCharsets.UTF_8.toString()));
+        } catch (IOException e) {
+            filedb = null;
+        }
         if (filedb == null) {
             //forward to 404
             return ResponseEntity.notFound().build();

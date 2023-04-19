@@ -30,8 +30,14 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Valid password annotation
- * 
+ * Valid password annotation to ensure password meets
+ * minimum requirements for security
+ * Minimum length of 8 characters
+ * Maximum length of 64 characters
+ * At least one digit
+ * At least one lowercase character
+ * At least one uppercase character
+ * At least one special character
  */
 @Target({ ElementType.FIELD })
 @Retention(RUNTIME)

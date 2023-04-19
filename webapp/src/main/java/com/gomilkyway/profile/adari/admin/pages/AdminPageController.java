@@ -18,8 +18,6 @@ package com.gomilkyway.profile.adari.admin.pages;
 
 import org.springframework.http.MediaType;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.MessageSource;
@@ -35,7 +33,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gomilkyway.profile.adari.files.FiledbService;
@@ -45,34 +42,69 @@ import com.gomilkyway.profile.adari.pages.PageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Admin page controller to handle page creations, editing, and deletions.
+ * It provides, adding, saving, editing, and deleting pages.
+ * and image uploads
+ */
+
 @RequiredArgsConstructor
 @Controller
 public class AdminPageController {
-    private final PageService pageService;
-    
-    private final MessageSource messageSource;
 
+    /**
+     * Auto wired services
+     */    
+    private final PageService pageService;
+    private final MessageSource messageSource;
     private final FiledbService filedbService;
 
+
+    /**
+     * Get all pages from database and return them to the admin/pages.html page
+     * 
+     * @param model
+     * @return admin/pages.html
+     * 
+    */
     @GetMapping(path = "/admin/pages")
     public String getPages(Model model)  {
         model.addAttribute("pages", pageService.getAllPages());
         return "admin/pages";
     }
 
+    /**
+     * Creates a new page and return it to the admin/pages/newOrEdit.html page
+     * 
+     * @param model
+     * @return admin/pages/newOrEdit.html
+     */
     @GetMapping(path = "/admin/pages/new")
     public String newPage(Model model)  {
         model.addAttribute("page", new Page());
         return "admin/pages/newOrEdit";
     }
 
+    /**
+     * Get a page by id and return it to the admin/pages/newOrEdit.html page
+     * 
+     * @param id
+     * @param model
+     * @return admin/pages/newOrEdit.html
+     */
     @GetMapping(path = "/admin/pages/edit/{id}")
     public String editPage(@PathVariable Long id, Model model)  {
         model.addAttribute("page", pageService.getPageById(id));
         return "admin/pages/newOrEdit";
     }
 
-
+    /**
+     * Delete a page by id and return to the admin/pages.html page
+     * 
+     * @param id
+     * @param model
+     * @return admin/pages.html
+     */
     @PostMapping(path = "/admin/page/savepage")
     public String savePage(@Valid @ModelAttribute("page") Page page, BindingResult bindingResult, Model model) {
         
@@ -92,6 +124,13 @@ public class AdminPageController {
         return "redirect:/admin/pages?addedNewpage";
     }
 
+    /**
+     * Uploads an image and returns the location of the image
+     * for use of tinymce editor
+     * 
+     * @param image
+     * @return ResponseEntity<Map<String, Object>>
+     */
     @RequestMapping(path = "/admin/pages/uploadImage", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = "application/json")
     public ResponseEntity<Map<String, Object>> uploadImages(@RequestPart(name = "file") MultipartFile image ) {
         

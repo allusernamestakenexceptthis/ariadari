@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +33,14 @@ public class FileController {
             //forward to 404
             return ResponseEntity.notFound().build();
         }
+
+        
         InputStream in;
         try {
-            in = Files.newInputStream(Paths.get(FiledbService.IMAGE_UPLOAD_DIR, filedb.getServerFileName()), StandardOpenOption.READ);
+            File resource = ResourceUtils.getFile("classpath:application.properties");
+            String filePath = resource.getParentFile().getAbsolutePath();
+            String path = Paths.get(filePath, FiledbService.IMAGE_UPLOAD_DIR).toString();
+            in = Files.newInputStream(Paths.get(path, filedb.getServerFileName()), StandardOpenOption.READ);
         } catch (IOException io) {
             //forward to 404
             return ResponseEntity.notFound().build();

@@ -28,6 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,9 +78,10 @@ public class FiledbService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+        
+        
 
-        String urlName = URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8.toString());
-
+        String urlName = URLEncoder.encode(System.currentTimeMillis() + fileName.substring(2, 5) + "-" + file.getOriginalFilename(), StandardCharsets.UTF_8.toString());
         Filedb filedb = new Filedb();
         filedb.setName(urlName);
         filedb.setServerFileName(fileName);
@@ -89,13 +92,18 @@ public class FiledbService {
 
     public String uploadImage(MultipartFile file) throws Exception{
 
-        String fileName = SanitizingUtil.sanitizeFileName(file.getOriginalFilename());
+        String fileName = file.getOriginalFilename();
 
         if (!isFileValidImage(file)) {
             throw new Exception("Invalid file type");
         }
+        
 
         fileName = System.currentTimeMillis() + fileName;
+        Random random = new Random(System.currentTimeMillis() + new Random().nextInt());
+        Long extraSalt= random.nextLong();
+        
+        fileName += extraSalt.toString().substring(0, 5);
         fileName = DigestUtils.md5DigestAsHex(fileName.getBytes());
 
         File resource = ResourceUtils.getFile("classpath:application.properties");

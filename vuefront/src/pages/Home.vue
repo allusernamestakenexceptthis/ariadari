@@ -1,32 +1,25 @@
 <template>
-  <div class="mainpage v-container--fluid">
-    <v-layout row wrap>
-        <v-card>
-          <v-card-title>
-            <v-layout row wrap>
-                <h1>Home</h1>
-            </v-layout>
-          </v-card-title>
-          <v-card-text>
-                <v-card v-for="page in pages" :key="page.id">
-                    <v-card-title>
-                        <h2>{{ page.title }}</h2>
-                    </v-card-title>
-                    <v-card-text>
-                        <div v-html="page.content">
+    <v-sheet width="100%" class="sheetPaper" rounded="lg" elevation="3" color="white">
+        <v-col class="text-left">
+            <v-container v-for="page in pages" :key="page.id" :id="page.slug">
+                <h2>{{ page.title }}</h2>
+                <div v-html="page.content">
 
-                        </div>
-                    </v-card-text>
-                </v-card>
-          </v-card-text>
-        </v-card>
-    </v-layout>
-  </div>
+                </div>
+                asdf<br/>
+                asdf<br/>
+                asdf<br/>
+                asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>
+                asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>
+            </v-container>
+        </v-col>
+    </v-sheet>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'HomePage',
+
   data () {
     return {
       pages: []
@@ -63,5 +56,16 @@ li {
 }
 a {
   color: #42b983;
+}
+.sheetPaper{
+    opacity:0.8;
+}
+h2 {
+    color: #42b983;
+    font-size: 2.5rem;
+}
+p {
+    font-size: 1.5rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 </style>

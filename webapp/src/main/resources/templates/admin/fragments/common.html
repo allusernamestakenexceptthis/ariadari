@@ -114,14 +114,69 @@
     </footer>
     <th:block th:fragment="tinymce">
         <script th:src="@{/webjars/tinymce/tinymce.min.js}"></script>
-        <script>
+        <script th:inline="javascript">
             tinymce.init({
                 selector: 'textarea.tinymceditor',
                 plugins: 'lists, link, image, media, code',
                 toolbar: 'undo redo | styles | bold italic | link image | alignleft aligncenter alignright alignjustify | backcolor outdent indent | numlist bullist | code | removeformat help',
+                images_upload_url: /*[[@{/admin/pages/uploadImage}]]*/'/admin/',
+                images_upload_handler: function (blobInfo, success, failure) {
+                    var xhr, formData;
+                    xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+                    xhr.open('POST', /*[[@{/admin/pages/uploadImage}]]*/'/admin/');
+                    xhr.setRequestHeader("X-CSRF-TOKEN", /*[[${_csrf.token}]]*/'token');
+                    xhr.onload = function() {
+                        var json;
+
+                        if (xhr.status != 200) {
+                            failure('HTTP Error: ' + xhr.status);
+                            return;
+                        }
+                        json = JSON.parse(xhr.responseText);
+
+                        if (!json || typeof json.location != 'string') {
+                            failure('Invalid JSON: ' + xhr.responseText);
+                            return;
+                        }
+                        success(json.location);
+                    };
+                    xhr.onerror = function () {
+                        failure('Image upload failed due. Code: ' + xhr.status);
+                    };
+                    formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    xhr.send(formData);
+                },
+                images_upload_base_path: '/uimages/',
+                images_upload_credentials: true,
                 menubar: false,
             });
+            function processImagesAndSubmit(contextId) {
+                $(contextId).find('button[type="submit"]').prop('disabled', true);
+                $(contextId).find('.overlayloader').addClass('show');
+                tinymce.activeEditor.uploadImages(function(success, response) {
+                    if (!success) {
+                        console.log(response);
+                        alert(response);
+                        $(contextId).find('button[type="submit"]').prop('disabled', false);
+                        $(contextId).find('.overlayloader').removeClass('show');
+                        return;
+                    } else {
+                        $(contextId).submit();
+                    }
+                });
+            }
         </script>
+    </th:block>
+    <th:block th:fragment="spinner">
+        <div class="overlayloader">
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
     </th:block>
 </body>
 

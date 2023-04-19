@@ -7,7 +7,7 @@
     <div layout:fragment="content">
         <h1>Hello <span th:tag="remove" sec:authentication="principal.name">Admin</span></h1>
         
-        <p class="lead"><span th:remove="tag" th:text="${page.admin_dashboard.welcome}">Welcome to admin </span> version:<span th:tag="remove" th:text="${appversion}"></span></p>
+        <p class="lead"><span th:remove="tag" th:text="#{page.admin_dashboard.welcome}">Welcome to admin </span> version:<span th:tag="remove" th:text="${appversion}"></span></p>
     </div>
 </body>
 

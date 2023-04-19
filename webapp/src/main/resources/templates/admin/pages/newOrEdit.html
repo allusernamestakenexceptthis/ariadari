@@ -16,7 +16,8 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form th:action="@{/admin/page/savepage}" method="post" th:object="${page}">
+                <form th:action="@{/admin/page/savepage}" method="post" id="theform" th:object="${page}" class="relative-position">
+                    <th:block th:replace="~{admin/fragments/common :: spinner}">Loading...</th:block>
                     <input type="hidden" th:field="*{id}" />
                     <div th:if="${#fields.hasErrors('global')}" class="text-danger mb-3">
                         <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
@@ -50,7 +51,7 @@
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" th:text="#{common.save}"
+                        <button type="button" th:text="#{common.save}" onclick="processImagesAndSubmit('#theform');"
                             class="btn btn-primary w-100">Save</button>
                     </div>
                 </form>

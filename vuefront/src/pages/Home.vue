@@ -1,46 +1,82 @@
 <template>
-    <v-sheet width="100%" border="0" elevation="0">
-        <v-col class="text-left">
-            <div  v-animate-onscroll="{down: 'animated flip'}" v-for="page in pages" :key="page.id" :id="page.slug" :ref="page.slug">
-                <v-container>
-                    <h2>{{ page.title }}</h2>
-                    <v-sheet width="100%" rounded="lg" elevation="3" color="white" class="px-5 py-5">
-                        <div v-html="page.content"></div>
-                        asdf<br/>
-                        asdf<br/>
-                        asdf<br/>
-                        asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>
-                        asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>asdf<br/>
-
-                    </v-sheet>
-                </v-container>
-            </div>
-            <v-card height="50" class="background-cover"></v-card>
-        </v-col>
-    </v-sheet>
+    <main class="v-100">
+        <v-sheet width="100%" border="0" elevation="0">
+            <v-col class="text-left">
+                <template v-for="(page,indx) in pages" :key="page.id">
+                    <div :id="page.slug" :ref="page.slug">
+                        <h2 v-animate-onscroll="{down: (indx!=0)?'animate__animated animate__fadeInUp':''}">{{ page.title }}</h2>
+                        <v-container fluid>
+                            <v-sheet width="100%" rounded="lg" elevation="3" color="white" class="px-5 py-5" v-animate-onscroll="{down: (indx!=0)?'animate__animated animate__pulse':''}">
+                                <div v-html="page.content"></div>
+                            </v-sheet>
+                        </v-container>
+                    </div>
+                </template>
+            </v-col>
+        </v-sheet>
+    </main>
 </template>
 
-<script>
+<script lang="ts">
+import { ref } from 'vue';
+import { mapGetters} from 'vuex';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
+
+
 export default {
   name: 'HomePage',
+  setup() {
+    const ctx = ref<any>(null);
+    const main = ref();
 
-  data () {
+
+
     return {
-      pages: []
+        ctx,
+        main
     }
   },
-  mounted () {
-    fetch('http://localhost:8082/get/allpages',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        }
-      }
-    )
-      .then(response => response.json())
-      .then(data => { this.pages = data })
+
+  computed: {
+    ...mapGetters('pages', ['pages'])
+  },
+
+  methods: {
+    handleVideoPlay() {
+        const video: any = this.$refs['videoBack'];
+        video[0].pause();
+    },
+        
+  },
+
+  mounted() {
+
+    //window.addEventListener('scroll', this.handleScroll);
+    this.ctx = gsap.context((self) => {
+            if (self == null || self.selector == null){
+                return;
+            }
+            const boxes = self.selector('.box');
+            boxes.forEach((box: any) => {
+                gsap.to(box, {
+                    x: 350,
+                    y:0,
+                    scrollTrigger: {
+                        trigger: box,
+                        start: 'bottom bottom',
+                        end: 'top 10%',
+                        scrub: true,
+                    }
+                });
+            });
+    }, this.main); // <- Scope!
+
+  },
+
+  onMounted() {
+    this.ctx.revert();
   }
 }
 </script>
@@ -65,8 +101,10 @@ a {
     opacity:0.8;
 }
 h2 {
-    color: #42b983;
+    text-align: center;
     font-size: 2.5rem;
+    padding: 2rem;
+    text-transform: capitalize;
 }
 p {
     font-size: 1.5rem;
@@ -74,7 +112,19 @@ p {
 }
 .background-cover {
     background: url(@/assets/images/background.jpg) repeat;
-    background-size: contain;
+    background-size: cover;
     top: 0;
 }
+
+.box {
+    background-color: green;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    font-size: 24px;
+    text-align: center;
+    line-height: 100px;
+  }
+
+
 </style>

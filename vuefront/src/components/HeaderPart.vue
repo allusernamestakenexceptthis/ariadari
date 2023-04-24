@@ -1,33 +1,24 @@
 <template>
-    <header>
+    <header class="topheader">
         <v-app-bar
-            color="transparent"
-            elevation="24"
+            color="black"
+            elevation="0"
             rounded
+            class="v-app-bar--fixed"
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title class="titlebar text-left">Ari Adari</v-toolbar-title>
-
+            <!--
             <v-btn variant="text" icon="mdi-magnify"></v-btn>
 
             <v-btn variant="text" icon="mdi-filter"></v-btn>
 
-            <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
+            <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>-->
 
         </v-app-bar>
-        <v-navigation-drawer
-              v-model="drawer"
-                location="left"
-                dark
-                temporary
-            >
-                <v-list
-                    :items="items"
-                >
-                </v-list>
-        </v-navigation-drawer>
-        <video preload="auto" autoplay="false" ref="video_background" loop="loop" muted="muted" class="video-background">
+       
+        <video preload="auto" autoplay="true" ref="video_background" loop="true" muted="true" class="video-background">
             <source src="@/assets/videos/EarthMoonZoomS.mp4" type="video/mp4">
         </video>
         <div>
@@ -36,12 +27,8 @@
                     <div class="header-content">
                         <div class="header-content-inner bigtext">
                             <div :key="text.title">
-                                <v-scroll-x-transition origin="left left">
-                                    <h1 class="homeHeading" v-show="titleShown">{{ text.title }}</h1>
-                                </v-scroll-x-transition>
-                                <v-scroll-x-transition origin="right right">
-                                    <h2 class="homesubHeading" v-show="subtitleShown">{{ text.subtitle }}</h2>
-                                </v-scroll-x-transition>
+                                <h1 class="homeHeading animate__animated animate__lightSpeedInLeft" v-show="titleShown">{{ text.title }}</h1>
+                                <h2 class="homesubHeading animate__animated animate__bounceInLeft" v-show="subtitleShown">{{ text.subtitle }}</h2>
                             </div>
                         </div>
                     </div>
@@ -49,8 +36,43 @@
             </div>
         </div>
     </header>
+    <v-navigation-drawer
+            v-model="drawer"
+            location="left"
+            temporary
+            class="nav-drawer-items position-fixed top-0 left-0"
+        >
+        <v-list
+            density="compact"
+            nav
+            >
+                <v-list-item
+                    v-for="(page, i) in navItems"
+                    :key="i"
+                    :value="page.slug"
+                    active-color="primary"
+                    @click="goArea($event, '#'+page.slug)"
+                    ripple
+                    :link="true"
+                >
+                    <template v-slot:prepend>
+                        <v-icon v-if="page.icon" :icon="page.icon" color="orange"></v-icon>
+                    </template>
+                    <v-list-item-title>
+                       
+                        {{ page.slug }}
+                    
+                    </v-list-item-title>
+                    
+                </v-list-item>
+            </v-list>
+    </v-navigation-drawer>
 </template>
-<script allowJs>
+<script allowJs lang="ts">
+import { mapGetters} from 'vuex';
+import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+gsap.registerPlugin(ScrollToPlugin);
 
 export default {
   name: 'HeaderPart',
@@ -96,26 +118,47 @@ export default {
           title: 'Contact me',
           subtitle: ''
         }
-      ]
+      ],
+      currentItem: ''
+    }
+    
+  },
+  computed: {
+    ...mapGetters('pages', ['pages']),
+
+    text () {
+      return this.texts[this.currentTextIndex]
+    },
+
+    navItems () {
+      return this.pages.map((item: any) => {
+        return {
+          ...item,
+          icon: item.icon || '',
+          link: item.page_slug,
+          active: this.currentItem === item.path
+        }
+      })
     }
   },
   methods: {
-    changeText (index) {
+    changeText (index: number) {
       this.text = this.texts[index]
-    }
-  },
-  computed: {
-    text () {
-      return this.texts[this.currentTextIndex]
+    },
+
+    goArea(e: Event, link: string){
+        if (link.substring(0,1) != "#") {
+            return;
+        }
+
+        e.preventDefault();
+        gsap.to(window, {
+            duration: 0.3,
+            scrollTo: { y: link, offsetY: 30 }
+        });
     }
   },
   mounted () {
-    window.addEventListener('scroll', function () {
-      const video = this.$refs.video_background
-      const scrollPosition = window.pageYOffset
-      video.currentTime = scrollPosition / 100
-    })
-
     setInterval(() => {
       this.currentTextIndex++
       if (this.currentTextIndex >= this.texts.length) {
@@ -135,11 +178,11 @@ export default {
 
 </script>
 <style scoped>
-header{
+header.topheader{
     position: relative;
     width: 100%;
-    max-height: 400px;
-    min-height: 300px;
+    max-height: 700px;
+    min-height: 500px;
     background-size: contain;
     top: 0;
     overflow:hidden;
@@ -154,7 +197,7 @@ header{
     z-index: -1;
 }
 .container{
-    margin-top:55px;
+    margin-top:10%;
     width:100%;
 }
 .titlebar, .bigtext{
@@ -172,6 +215,15 @@ header{
 }
 .homesubHeading{
     font-size:1.5rem;
+}
+.v-app-bar--fixed{
+    position: fixed !important;
+    top: 0;
+    left: 0;
+}
+
+body {
+    scroll-behavior: smooth;
 }
 
 </style>

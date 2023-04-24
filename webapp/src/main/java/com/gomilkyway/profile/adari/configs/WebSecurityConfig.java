@@ -29,6 +29,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import com.gomilkyway.profile.adari.user.UserRole;
 import com.gomilkyway.profile.adari.user.UserService;
 
+/**
+ * Configuration class for Spring Security
+ * 
+ */
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -62,6 +67,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(
                                         "/",
                                         "/favicon.ico",
+                                        "/logom.png",
                                         "/error",
                                         "/css/**",
                                         "/js/**",
@@ -77,7 +83,8 @@ public class WebSecurityConfig {
                                         "/register",
                                         "/login",
                                         "/home",
-                                        "/status"
+                                        "/status",
+                                        "/assets/**"
                                 ).permitAll()
                                 .anyRequest().denyAll()
 

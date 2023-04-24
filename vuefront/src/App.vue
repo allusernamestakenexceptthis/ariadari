@@ -3,35 +3,38 @@
         <v-layout>
             <div class="w-100 h-100 m-0">
                 <headerPart/>
-
-                <v-container>
-                    <v-row>
+                <v-row>
+                    <v-col>
                         <home/>
-                    </v-row>
-                </v-container>
+                    </v-col>
+                </v-row>
             </div>
         </v-layout>
     </v-app>
 
 </template>
 
-<script>
+<script  lang="ts">
 import Home from './pages/Home.vue'
-import HeaderPart from '@/components/HeaderPart'
+import HeaderPart from '@/components/HeaderPart.vue'
+import { useHead } from '@vueuse/head'
 
 export default {
   name: 'App',
+  setup() {
+
+    useHead({
+        title: 'Ari Adari - web developer portfolio'
+    });
+  },
   components: {
     Home,
     HeaderPart
   },
   mounted () {
-    window.addEventListener('scroll', function () {
-      const video = this.$refs.video_background
-      const scrollPosition = window.pageYOffset
-      video.currentTime = scrollPosition / 100
-    })
-  }
+    this.$store.dispatch('pages/getPages')
+  },
+  
 }
 </script>
 

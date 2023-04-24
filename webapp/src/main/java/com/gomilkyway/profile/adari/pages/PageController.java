@@ -30,7 +30,7 @@ public class PageController {
         this.pageService = pageService;
     }
 
-    @CrossOrigin(origins = "http://localhost:8080, http://localhost:8082")
+    @CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8082", "http://localhost:8086"})
     @GetMapping(path = "/get/allpages", produces = "application/json")
     public @ResponseBody Iterable<Page> getPublishedPages() {
         return pageService.getPublishedPages();

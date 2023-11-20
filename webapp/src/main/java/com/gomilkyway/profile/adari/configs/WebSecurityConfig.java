@@ -42,12 +42,7 @@ public class WebSecurityConfig {
 
     public WebSecurityConfig(UserService userService) {
         this.userService = userService;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/resources/**", "/webjars/**");
-    }
+    } 
 
 	/**
 	 * Configure the security filter chain

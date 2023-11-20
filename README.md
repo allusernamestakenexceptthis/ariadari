@@ -30,8 +30,14 @@ back to root path run
 gradlew build
 `
 
-or
+or run
 
 `
-gradlew bootRun
+gradlew webapp:bootRun -Pdev
+`
+
+build for production
+
+`
+./gradlew build -Pprod -x test
 `

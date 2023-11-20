@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.gomilkyway.profile.adari.audit.AuditAwareImpl;
 import com.gomilkyway.profile.adari.configs.WebSecurityConfig;
 import com.gomilkyway.profile.adari.user.UserService;
 
@@ -21,6 +23,9 @@ public class WebSecurityConfigTest {
 	
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private AuditAwareImpl auditAwareImpl;
 
 	/**
 	 * Test unauthorized

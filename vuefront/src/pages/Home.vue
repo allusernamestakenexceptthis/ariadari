@@ -103,7 +103,7 @@ a {
 h2 {
     text-align: center;
     font-size: 2.5rem;
-    padding: 2rem;
+    padding: 0.8rem;
     text-transform: capitalize;
 }
 p {

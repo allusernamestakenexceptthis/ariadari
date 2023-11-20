@@ -186,7 +186,7 @@ header.topheader{
     background-size: contain;
     top: 0;
     overflow:hidden;
-    margin-bottom:50px;
+    margin-bottom:0;
 }
 .video-background {
     position: absolute;

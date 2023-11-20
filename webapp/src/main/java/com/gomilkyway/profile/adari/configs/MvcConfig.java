@@ -19,7 +19,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gomilkyway.profile.adari.handlers.AdminIntercepterHandler;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -68,6 +70,7 @@ public class MvcConfig implements WebMvcConfigurer {
         // Serve static content from the "front" subfolder by default
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/front/");
+                
 
         // Serve static content from the "admin" subfolder for requests to "/admin"
         registry.addResourceHandler("/newadmin/**")
@@ -88,4 +91,12 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AdminIntercepterHandler()).addPathPatterns("/admin/**");
     }
+
+    @Bean
+	public CharacterEncodingFilter characterEncodingFilter() {
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		return characterEncodingFilter;
+	}
 }

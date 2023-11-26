@@ -1,0 +1,8 @@
+
+@media (prefers-reduced-motion: reduce), print {
+    .animate__animated {
+        animation-duration: 80ms!important;
+        transition-duration: 80ms!important;
+        animation-iteration-count: 1!important;
+    }
+}

@@ -79,6 +79,15 @@ task explodedWar(type: Copy, dependsOn: deleteBuild) {
     with war
 }
 
+def profiles = 'prod'
+if (project.hasProperty('dev')) {
+    profiles = 'dev'
+}
+
+bootRun {
+  args = ["--spring.profiles.active=" + profiles]
+}
+
 /*
 task createStartupScript(type: WriteProperties) {
     outputFile = file("$buildDir/libs/run-cli.sh")

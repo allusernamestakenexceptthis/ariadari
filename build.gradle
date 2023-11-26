@@ -45,16 +45,9 @@ compileTestJava.options.encoding = 'UTF-8'
 
 bootJar { enabled = false }
 jar { enabled = false }
-def profiles = 'prod'
-
-bootRun {
-  args = ["--spring.profiles.active=" + profiles]
-}
 
 // Add this custom task to the root build.gradle
 task buildAndCopyCli(type: Copy) {
-    System.setProperty("spring.profiles.active", profiles)
-    println "Profile: " + System.getProperty("spring.profiles.active")
     dependsOn ':webapp:explodedWar'
     dependsOn ':cli:build'
     from fileTree(dir: 'cli/build/libs', include: '*.jar')

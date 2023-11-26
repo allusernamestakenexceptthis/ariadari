@@ -1,9 +1,10 @@
 
 # Portfolio website with CMS
 
-Portfolio website being developed in Java Spring Boot Framework and Vue with CMS features. Started this to learn Spring as I go.
+Portfolio website being developed in Java Spring Boot Framework and Nuxt 3 with SSR and CMS features.
+Started this site to learn Java spring boot.
 
-ポートフォリオのウェブサイトはJava Spring BootフレームワークとVueでCMSを構築されています。Springの学習を進めながら開発を行っています。
+ポートフォリオのウェブサイトはJava Spring BootフレームワークとNuxtでCMSを構築されています。Springの学習を進めながら開発を行っています。
 
 ## Installation
 

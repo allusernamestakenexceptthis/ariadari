@@ -6,7 +6,9 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 const store = usePagesStore();
 const { pages } = storeToRefs(store);
 
-gsap.registerPlugin(ScrollToPlugin);
+if (process.client) {
+  gsap.registerPlugin(ScrollToPlugin);
+}
 
 const drawer = ref(false);
 const titleShown = ref(true);

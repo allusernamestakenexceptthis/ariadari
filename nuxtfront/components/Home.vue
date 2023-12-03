@@ -5,7 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const store = usePagesStore();
 const { pages } = storeToRefs(store);
-gsap.registerPlugin(ScrollTrigger);
+
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const ctx = ref<any>(null);
 const main = ref();

@@ -9,17 +9,10 @@
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title class="titlebar text-left">Ari Adari</v-toolbar-title>
-            <!--
-            <v-btn variant="text" icon="mdi-magnify"></v-btn>
-
-            <v-btn variant="text" icon="mdi-filter"></v-btn>
-
-            <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>-->
-
         </v-app-bar>
        
         <video preload="auto" autoplay="true" ref="video_background" loop="true" muted="true" class="video-background">
-            <source src="@/assets/videos/EarthMoonZoomS.mp4" type="video/mp4">
+            <source src="@/assets/videos/EarthAndMoon.mp4" type="video/mp4">
         </video>
         <div>
             <div class="container">

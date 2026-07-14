@@ -123,7 +123,7 @@ onMounted(() => {
         </v-app-bar>
        
         <video preload="auto" autoplay="true" ref="video_background" loop="true" muted="true" class="video-background">
-            <source src="@/assets/videos/EarthMoonZoomS.mp4" type="video/mp4">
+            <source src="@/assets/videos/EarthAndMoon.mp4" type="video/mp4">
         </video>
         <div>
             <div class="container">

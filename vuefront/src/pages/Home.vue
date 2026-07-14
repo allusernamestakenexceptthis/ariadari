@@ -7,7 +7,7 @@
                         <h2 v-animate-onscroll="{down: (indx!=0)?'animate__animated animate__fadeInUp':''}">{{ page.title }}</h2>
                         <v-container fluid>
                             <v-sheet width="100%" rounded="lg" elevation="3" color="white" class="px-5 py-5" v-animate-onscroll="{down: (indx!=0)?'animate__animated animate__pulse':''}">
-                                <div v-html="page.content"></div>
+                                <div v-html="pageContentProcessor(page.content)"></div>
                             </v-sheet>
                         </v-container>
                     </div>
@@ -31,8 +31,6 @@ export default {
     const ctx = ref<any>(null);
     const main = ref();
 
-
-
     return {
         ctx,
         main
@@ -48,12 +46,18 @@ export default {
         const video: any = this.$refs['videoBack'];
         video[0].pause();
     },
-        
+    /**
+     * convert ../../../uimages/ to https://api.ariadari.com/uimages/
+     * 
+     * @param content - The content to process
+     * @returns The processed content
+     */
+    pageContentProcessor(content: string) {
+        return content.replace(/<img src="\.\.\/\.\.\/uimages\//g, 'https://api.ariadari.com/uimages/');
+    }
   },
 
   mounted() {
-
-    //window.addEventListener('scroll', this.handleScroll);
     this.ctx = gsap.context((self) => {
             if (self == null || self.selector == null){
                 return;

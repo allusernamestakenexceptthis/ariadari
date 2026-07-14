@@ -36,6 +36,17 @@ export default {
   },
   
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const apiOrigin = ["https://api", "ariadari", "com"].join(".");
+
+  document.querySelectorAll("img.api-image[data-src]").forEach((image) => {
+    const path = image.dataset.src;
+
+    if (path?.startsWith("/uimages/")) {
+      image.src = apiOrigin + path;
+    }
+  });
+});
 </script>
 
 <style>

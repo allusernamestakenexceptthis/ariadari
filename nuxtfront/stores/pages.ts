@@ -1,4 +1,3 @@
-import { RuntimeConfig } from 'nuxt/schema';
 import { defineStore } from 'pinia'
 import type { Page } from '@/types/page'
 

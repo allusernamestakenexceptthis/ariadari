@@ -1,5 +1,7 @@
 {
-  "name": "nuxt-app",
+  "name": "ariadari-nuxt",
+  "version": "1.0.0",
+  "packageManager": "pnpm@11.13.0",
   "private": true,
   "type": "module",
   "scripts": {
